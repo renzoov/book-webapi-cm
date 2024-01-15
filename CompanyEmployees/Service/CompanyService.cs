@@ -4,6 +4,7 @@ using Entities.Exceptions;
 using Entities.Models;
 using Service.Contracts;
 using Shared.DataTransferObjects;
+using System.ComponentModel.Design;
 
 namespace Service
 {
@@ -86,6 +87,15 @@ namespace Service
 
             var companyDto = _mapper.Map<CompanyDto>(company);
             return companyDto;
+        }
+
+        public void UpdateCompany(Guid companyId, CompanyForUpdateDto companyForUpdate, bool trackChanges)
+        {
+            var companyEntity = _repository.Company.GetCompany(companyId, trackChanges); 
+            if (companyEntity is null) throw new CompanyNotFoundException(companyId); 
+            
+            _mapper.Map(companyForUpdate, companyEntity); 
+            _repository.Save();
         }
     }
 }
