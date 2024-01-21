@@ -1,6 +1,7 @@
 ﻿using Contracts;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
+using Repository.Extensions;
 using Shared.RequestFeatures;
 using System.Reflection.Metadata.Ecma335;
 
@@ -28,7 +29,8 @@ namespace Repository
         {
             var employees = await FindByCondition(e => e.CompanyId.Equals(companyId) &&
                 (e.Age >= employeeParameters.MinAge && e.Age <= employeeParameters.MaxAge), trackChanges)
-                                    .OrderBy(e => e.Name)
+                                    .FilterEmployees(employeeParameters.MinAge, employeeParameters.MaxAge)
+                                    .Search(employeeParameters.SearchTerm)
                                     .Skip((employeeParameters.PageNumber - 1) * employeeParameters.PageSize)
                                     .Take(employeeParameters.PageSize)
                                     .ToListAsync();
