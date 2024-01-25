@@ -1,5 +1,6 @@
 using CompanyEmployees.Extensions;
 using CompanyEmployees.Presentation.ActionFilters;
+using CompanyEmployees.Utility;
 using Contracts;
 using Entities.Models;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -36,9 +37,13 @@ builder.Services.AddControllers(config =>
 .AddCustomCSVFormatter()
 .AddApplicationPart(typeof(CompanyEmployees.Presentation.AssemblyReference).Assembly);
 
+builder.Services.AddCustomMediaType();
+
 builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddScoped<ValidationFilterAttribute>();
+builder.Services.AddScoped<ValidateMediaTypeAttribute>();
+builder.Services.AddScoped<IEmployeeLinks, EmployeeLinks>();
 builder.Services.AddScoped<IDataShaper<EmployeeDto>, DataShaper<EmployeeDto>>();
 
 NewtonsoftJsonPatchInputFormatter GetJsonPatchInputFormatter() =>
