@@ -38,7 +38,7 @@ builder.Services.AddControllers(config =>
 .AddApplicationPart(typeof(CompanyEmployees.Presentation.AssemblyReference).Assembly);
 
 builder.Services.AddCustomMediaType();
-
+builder.Services.ConfigureVersioning();
 builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddScoped<ValidationFilterAttribute>();
